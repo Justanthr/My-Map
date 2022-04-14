@@ -44,7 +44,7 @@ async function fourSquare(business) {
 }
 
 function processBusinesses(data) {
-let businesses = data.myMap((element) => {
+let businesses = data.map((element) => {
   let location = {
     name: element.name,
     lat: element.geocodes.main.latitude,
@@ -55,52 +55,18 @@ let businesses = data.myMap((element) => {
 return businesses
 }
 
+function addMarkers(businesses) {
+  businesses.forEach(element => {
+    L.marker([element.lat, element.long]).addTo(myMap)
+  });
+}
+
 // business submit button
 document.getElementById('submit').addEventListener('click', async (event) => {
 event.preventDefault()
 let business = document.getElementById('business').value
 let data = await fourSquare(business)
 myMap.businesses = processBusinesses(data)
-myMap.addMarkers()
+addMarkers(myMap.businesses)
 })
 }
-
-//forsquare 
-// async function fourSquare(business) {
-//   const options = {
-//     method: 'GET',
-//     headers: {
-//       Accept: 'application/json',
-//       Authorization: 'fsq3rPwgNHEMIlHjA7eHoIJAaKzA0BX5wgcNlSyI0Xw5XcI='
-//     }
-//   }
-
-//   let limit = 5
-// let response = await fetch(`https://api.foursquare.com/v3/places/search?query=${business}&limit=${limit}&ll=${lat}%2C${lng}`, options)
-
-// let data = await response.text()
-// let parsedData = JSON.parse(data)
-// let businesses = parsedData.results
-// return businesses
-// }
-
-// function processBusinesses(data) {
-// let businesses = data.myMap((element) => {
-//   let location = {
-//     name: element.name,
-//     lat: element.geocodes.main.latitude,
-//     long: element.geocodes.main.longitude
-//   };
-//   return location
-// })
-// return businesses
-// }
-
-// // business submit button
-// document.getElementById('submit').addEventListener('click', async (event) => {
-// event.preventDefault()
-// let business = document.getElementById('business').value
-// let data = await fourSquare(business)
-// myMap.businesses = processBusinesses(data)
-// myMap.addMarkers()
-// })
